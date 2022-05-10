@@ -15,10 +15,10 @@ app.renderer.view.style.position = "absolute";
 document.body.appendChild(app.view);
 
 const Graphics = PIXI.Graphics;
-const ballSize = 32;
+const ballSize = 60;
 let lineHight = 800;
 let start = 0;
-let speed = 3;
+let speed = 2;
 let direction = 1;
 let centerX = window.innerWidth / 2;
 let centerY = window.innerHeight / 2;
@@ -29,6 +29,7 @@ circle.beginFill(0x22aacc).drawCircle(centerX, centerY, ballSize).endFill();
 app.stage.addChild(circle);
 circle.interactive = true;
 circle.buttonMode = true;
+let circleBounds = circle.getBounds();
 
 const line = new Graphics();
 line
@@ -44,10 +45,12 @@ let randomColor = function () {
 app.ticker.add((delta) => loop(delta));
 
 function loop(delta) {
-  circle.y += direction * speed;
-  circle.on("click", function () {
+  console.log(circleBounds.y);
+  circle.on("click", () => {
+    circle.y = start - circleBounds.y;
     direction = -1;
   });
+  circle.y += direction * speed;
 
   if (circle.y + ballSize / 2 > 300) {
     let color = randomColor();
